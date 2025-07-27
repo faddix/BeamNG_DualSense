@@ -1,0 +1,61 @@
+---@class ElectricsValues
+-- Vehicle Controls
+---@field brake_input number Brake input (0 to 1)
+---@field clutch number Clutch output (0 to 1)
+---@field clutch_input number Clutch input (0 to 1)
+---@field clutchRatio number Clutch input percentage (0 to 1)
+---@field horn number Horn status (0 or 1)
+---@field parkingbrake number Parking brake output (0 to 1)
+---@field parkingbrake_input number Parking brake input (0 to 1)
+---@field reverse number Indicates reverse gear selected (0 or 1)
+---@field steering number Steering wheel angle with assists (degrees)
+---@field steeringUnassisted number Raw steering wheel angle (degrees)
+---@field steering_input number Steering input (-1 to 1)
+---@field throttle number Throttle percentage, affected by rev-matching and shift logic (0 to 1)
+---@field throttle_input number Raw throttle input (0 to 1)
+-- Engine & Powertrain
+---@field engineLoad number Engine load percentage based on torque (0 to 1)
+---@field engineRunning boolean Whether engine is currently running
+---@field engineThrottle number Effective throttle level, 0 if engine disabled (0 to 1)
+---@field rpm number Engine rotation speed in RPM
+---@field rpmTacho number Smoothed RPM value for tachometers
+---@field rpmspin number Spin function based on engine RPM for pulleys (degrees)
+---@field running boolean|number Ignition status (0=off, 1=on, false=no ignition)
+---@field checkengine boolean Whether engine is disabled due to issues
+---@field oiltemp number Oil temperature in Celsius
+---@field watertemp number Water/coolant temperature in Celsius
+---@field radiatorFanSpin number Radiator fan spin animation value (0-360)
+-- Transmission
+---@field gear string Currently selected gear (includes shifter position for auto)
+---@field gear_A number Current shifter position for auto/DCT (0 to 1)
+---@field gearIndex number Current gear number (negative=reverse, 0=neutral)
+---@field isShifting boolean Whether transmission is currently shifting
+---@field smoothShiftLogicAV number Smoothed AV for shift logic calculations
+-- Fuel System
+---@field fuel number Percentage of fuel remaining (0 to 1)
+---@field fuelCapacity number Fuel tank capacity in liters
+---@field fuelVolume number Current fuel volume in liters
+---@field lowfuel boolean Indicates less than 10% fuel remaining
+-- Vehicle Status
+---@field accXSmooth number X-axis acceleration (m/s²)
+---@field accYSmooth number Y-axis acceleration (m/s²)
+---@field accZSmooth number Z-axis acceleration (m/s²)
+---@field airspeed number Vehicle speed relative to world (m/s)
+---@field avgWheelAV number Average wheel angular velocity (rad/s)
+---@field boost number Current forced induction boost (PSI)
+---@field boostMax number Maximum achievable boost (PSI)
+---@field electricalLoadCoef number Electrical system load (0 to 1)
+---@field hasABS boolean Whether vehicle has ABS system
+---@field absActive boolean Whether ABS is active
+---@field ignitionLevel number Ignition state (0=off, 1=acc, 2=on, 3=starter)
+---@field wheelspeed number Vehicle speed at wheels (m/s)
+
+---@class Electrics
+---@field values ElectricsValues
+
+-- This tells the IDE that the global electrics variable has these types
+---@type Electrics
+electrics = electrics
+v = v
+
+return {}
