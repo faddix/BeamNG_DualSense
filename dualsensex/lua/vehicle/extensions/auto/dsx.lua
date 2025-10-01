@@ -13,8 +13,6 @@
 -- - Engine temperature warning via mic mute LED
 -- - Engine stall and check engine status indicators
 --
--- This version currently in beta until further DSX features are implemented.
---
 -- ============================
 --         DEPENDENCIES
 -- ============================
@@ -29,7 +27,6 @@ require('auto/types')
 local jsonEnc = require('libs/lunajson/lunajson').encode
 local socket = require("socket")
 
--- Load configuration
 local config = require('auto/config')
 local CONFIG = config
 
@@ -109,9 +106,8 @@ end
 -- @param n Number to convert.
 -- @return Boolean value.
 local function toBoolean(n)
-    local isbool = type(n) == "boolean"
-    if isbool then return n
-    else return n > 0 end
+    if type(n) == "boolean" then return n
+    else return n ~= 0 end
 end
 
 --- Validates IP address format.
@@ -304,7 +300,7 @@ end
 function DSX:isEngineStalled()
     return electrics.values.ignitionLevel == 2
         and not toBoolean(electrics.values.engineRunning)
-        and not toBoolean(math_floor(electrics.values.rpm))
+        and math_floor(electrics.values.rpm) <= 0
 end
 
 --- Generates a packet for the player not being seated and using the unicycle.
@@ -463,12 +459,16 @@ function DSX:generateDrivingPacket(maxRPM, cutTime)
         end
     end
 
+    -- Trigger Logic:
+    --  Left Trigger:   ABS active -> pulsing resistance based on ABS
+    --                  No ABS -> resistance based on wheel slip
+    -- Right Trigger: Resistance based on clutch and propulsion slip
+
     -- Determine trigger strength and frequency
     local rTrigStr = toBoolean(electrics.values.clutch) and 0 or (toBoolean(electrics.values.gearIndex) and toBoolean(electrics.values.engineRunning) and clamp((maxLongSlip or 0) - 1, 0, 7) or 0)
     local lTrigStr = toBoolean(electrics.values.hasABS) and electrics.values.absActive * 7 or clamp(((maxLongSlip or 0) - 1) * 2, 0, 7)
     local lTrigFreq = toBoolean(electrics.values.hasABS) and 10 or 30 + math_floor(maxLongSlip or 0)
 
-    -- Adjust left trigger parameters
     local lTrigParams
     if lTrigStr > 1 then
         lTrigParams = {CONFIG.CONTROLLER_INDEX, Trigger.Left, TriggerMode.AutomaticGun, 0, lTrigStr, lTrigFreq}
@@ -489,7 +489,7 @@ function DSX:generateDrivingPacket(maxRPM, cutTime)
         }
     }
 
-    -- Add MicLED instruction for temperature warning
+    -- Insert MicLED instruction for temperature warning
     table.insert(instructions, {
         type = InstructionType.MicLED,
         parameters = {CONFIG.CONTROLLER_INDEX, self:checkEngineTemperature()}

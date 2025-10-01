@@ -4,7 +4,7 @@
 
 -- Configuration variables for the DSX extension
 return {
-    VERSION = "2.38",           -- Extension version
+    VERSION = "2.40",           -- Extension version
     DSX_IP = "127.0.0.1",       -- IP address of the DSX server
     DSX_PORT = 6969,            -- Port number of the DSX server
     CONTROLLER_INDEX = 0,       -- Controller index (0 for first controller, 1 for second controller, etc.)
@@ -43,7 +43,7 @@ return {
         light4 = false,
         light5 = false
     },
-    NE_RGB = vec3(128, 0, 0),   -- RGB color when no engine is present (gray)
+    NE_RGB = vec3(128, 0, 0),   -- RGB color when no engine is present (red)
     NE_PLAYER_LED = {           -- Player LEDs state when no engine is present
         light1 = false,
         light2 = false,
