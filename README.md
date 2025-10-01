@@ -3,7 +3,7 @@
 [![BeamNG.drive](https://img.shields.io/badge/BeamNG.drive-Mod-blue)](https://beamng.com) [![DualSense](https://img.shields.io/badge/DualSense-Controller-informational)](https://www.playstation.com/en-us/accessories/dualsense-wireless-controller/)
 Enhance your driving immersion in **BeamNG.drive** with full support for the PlayStation 5 **DualSense** controller. This mod integrates with the **DSX App** to bring real-time adaptive trigger feedback, RPM-reactive LEDs, gear indicators, and thermal alerts — all mapped from your vehicle's telemetry.
 
-> **Note:** This mod is currently in beta, feel free to open feature requests and provide feedback on the GitHub [issues](https://github.com/BeamNG/BeamNG_DualSense) page.
+> **Note:** This mod is currently in beta, feel free to open feature requests and provide feedback on the GitHub [issues](https://github.com/faddix/BeamNG_DualSense/issues) page.
 ---
 
 ## 🚗 Features
@@ -33,7 +33,7 @@ Get DSX from the [Steam store page](https://store.steampowered.com/app/1812620/D
 
 **Manual Installation (Alternative):**
   - A. Download the [BNG_DSX.zip](https://github.com/faddix/BeamNG_DualSense/releases) file from GitHub and extract it into your `mods/repo` folder
-  - B. Download the latest version from the BeamNG Mod Page [here](https://www.beamng.com/resources/TODO), then move the `BeamNG_DualSenseX.zip` folder into your `mods/repo` folder (you can find it by clicking the "Open Mod folder" button in the BeamNG Mods Page)
+  - B. Download the latest version from the BeamNG Mod Page [here](https://www.beamng.com/resources/dualsense-integration-via-dsx.36016/), then move the `BNG_DSX.zip` folder into your `mods/repo` folder (you can find it by clicking the "Open Mod folder" button in the BeamNG Mods Page)
 ### 3. Configure DSX
 - Open the DSX app
 - Go to **Settings > Networking**
