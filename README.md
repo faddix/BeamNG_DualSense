@@ -1,6 +1,6 @@
 # 🎮 DSX - DualSense Adaptive Triggers & Haptics for BeamNG.drive
 
-[![BeamNG.drive](https://img.shields.io/badge/BeamNG.drive-Mod-blue)](https://beamng.com) [![DualSense](https://img.shields.io/badge/DualSense-Controller-informational)](https://www.playstation.com/en-us/accessories/dualsense-wireless-controller/)
+[![BeamNG.drive](https://img.shields.io/badge/BeamNG.drive-Mod-blue)](https://beamng.com) [![DualSense](https://img.shields.io/badge/DualSense-Controller-informational)](https://www.playstation.com/en-us/accessories/dualsense-wireless-controller/) [![DSX](https://img.shields.io/badge/DSX-App-informational)](store.steampowered.com/app/1812620/DSX/)
 Enhance your driving immersion in **BeamNG.drive** with full support for the PlayStation 5 **DualSense** controller. This mod integrates with the **DSX App** to bring real-time adaptive trigger feedback, RPM-reactive LEDs, gear indicators, and thermal alerts — all mapped from your vehicle's telemetry.
 
 > **Note:** This mod is currently in beta, feel free to open feature requests and provide feedback on the GitHub [issues](https://github.com/faddix/BeamNG_DualSense/issues) page.
@@ -15,9 +15,11 @@ Enhance your driving immersion in **BeamNG.drive** with full support for the Pla
 
 ### 💡 LED Indicators
 - **RPM LED Bar:** Real-time RPM visualization using HSV color mapping with rev-limiter flash effects
+- **Turn Signals:** Displays turn signals with yellow flashing indicators
 - **Gear Indicator Lights:** Player LEDs show current gear with support for reverse and multi-gear configurations
   - *Note: Only available on DualSense V1 and Edge models due to hardware limitations*
 - **Engine Temperature Alerts:** Microphone LED indicates overheating with pulse and warning modes
+- **Low Fuel Alerts:** Microphone LED indicates low fuel with flashing effects
 - **Engine Status:** Visual feedback for stall conditions and check engine warnings with fade effects
 
 ---

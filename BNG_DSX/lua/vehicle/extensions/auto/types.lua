@@ -1,0 +1,95 @@
+---@class ElectricsValues
+-- Vehicle Controls
+---@field brake_input number            -- 0–1 : Brake input
+---@field clutch number                 -- 0–1 : Clutch output
+---@field clutch_input number           -- 0–1 : Clutch input
+---@field clutchRatio number            -- 0-1 : Clutch input percentage
+---@field horn number                   -- 0 or 1 : Indicates horn is active
+---@field parkingbrake number           -- 0–1 : Parking brake output
+---@field parkingbrake_input number     -- 0–1 : Parking brake input
+---@field reverse number                -- 0 or 1 : Indicates reverse gear selected
+---@field steering number               -- Degrees : Steering wheel angle (assisted)
+---@field steeringUnassisted number     -- Degrees : Raw steering wheel angle
+---@field steering_input number         -- -1 to 1 : Steering input
+---@field throttle number               -- 0–1 : Throttle percentage, affected by rev-matching and shift logic
+---@field throttle_input number         -- 0–1 : Throttle input
+-- Engine & Powertrain
+---@field engineLoad number             -- 0-1 : Engine load percentage based on torque 
+---@field engineRunning boolean         -- Whether engine is currently running
+---@field engineThrottle number         -- 0–1 : Effective throttle level, 0 if engine disabled
+---@field rpm number                    -- RPM : Engine rotation speed in RPM
+---@field rpmTacho number               -- RPM : Smoothed engine speed for gauges
+---@field rpmspin number                -- Degrees : For rotating pulley props
+---@field running boolean|number        -- 0=off,1=on,false=no ignition
+---@field checkengine boolean           -- Whether engine is disabled due to issues
+---@field oiltemp number                -- Oil temperature in Celsius
+---@field watertemp number              -- Water/coolant temperature in Celsius
+---@field radiatorFanSpin number        -- 0-360 : Radiator fan spin animation value
+-- Transmission
+---@field gear string                   -- Currently selected gear (includes shifter position for auto)
+---@field gear_A number                 -- Current shifter position for auto/DCT (0 to 1)
+---@field gearIndex number              -- Current gear number (negative=reverse, 0=neutral)
+---@field isShifting boolean            -- Whether transmission is currently shifting
+---@field smoothShiftLogicAV number     -- Smoothed AV for shift logic calculations
+-- Fuel System
+---@field fuel number                   -- 0–1 : Fuel ratio remaining
+---@field fuelCapacity number           -- Fuel tank capacity in liters
+---@field fuelVolume number             -- Current fuel volume in liters
+---@field lowfuel number                -- 0 or 1 : Fuel <10%
+-- Lights
+---@field brakelight_signal_R number    -- 0 or 1 : Brake + right signal combo (US-style)
+---@field brakelight_signal_L number    -- 0 or 1 : Brake + left signal combo (US-style)
+---@field brakelights number            -- 0 or 1 : Brake output w/ ABS flashing
+---@field fog number                    -- 0 or 1 : Fog lights on/off
+---@field hazard number                 -- 0 or 1 : Hazard lights flashing
+---@field hazard_enabled number         -- 0 or 1 : Hazards enabled flag
+---@field highbeam number               -- 0 or 1 : High beams on/off
+---@field highbeam_wigwag_R number      -- 0 or 1 : Right police wigwag headlight
+---@field highbeam_wigwag_L number      -- 0 or 1 : Left police wigwag headlight
+---@field lightbar number               -- 0,1,2 : Police lightbar mode (0=off,1=lights,2=siren)
+---@field lights number                 -- 0,1,2 : Light mode (0=off,1=low,2=high)
+---@field lights_state number           -- 0,1,2 : Same as `lights`
+---@field lowbeam number                -- 0 or 1 : Low beams on/off
+---@field lowhighbeam number            -- 0 or 1 : Low or high beam active
+---@field lowhighbeam_signal_R number   -- 0 or 1 : Low/high + right signal combo (US-style)
+---@field lowhighbeam_signal_L number   -- 0 or 1 : Low/high + left signal combo (US-style)
+---@field parking number                -- 0–1 : (Unused)
+---@field parkingbrakelight number      -- 0 or 1 : Parking brake light output
+---@field reverse_wigwag_R number       -- 0 or 1 : Right reverse wigwag (police)
+---@field reverse_wigwag_L number       -- 0 or 1 : Left reverse wigwag (police)
+---@field signal_L number               -- 0 or 1 : Left signal flashing
+---@field signal_R number               -- 0 or 1 : Right signal flashing
+---@field signal_left_input number      -- 0 or 1 : Left indicator selected
+---@field signal_right_input number     -- 0 or 1 : Right indicator selected
+---@field turnsignal number             -- -1,0,1 : Active turn signal (-1=left,1=right)
+-- Vehicle Status
+---@field absActive boolean             -- Whether ABS is active
+---@field accXSmooth number             -- m/s² : X-axis acceleration
+---@field accYSmooth number             -- m/s² : Y-axis acceleration
+---@field accZSmooth number             -- m/s² : Z-axis acceleration
+---@field airflowspeed number           -- m/s : Speed relative to airflow (accounts for wind)
+---@field airspeed number               -- m/s : Speed relative to world
+---@field altitude number               -- meters : Vehicle altitude
+---@field avgWheelAV number             -- rad/s : Average wheel angular velocity
+---@field boost number                  -- PSI : Current forced induction boost
+---@field boostMax number               -- PSI : Maximum boost achievable
+---@field electricalLoadCoef number     -- 0–1 : Electrical load (starter, etc.)
+---@field gearboxMode string            -- Selected gearbox mode
+---@field hasABS boolean                -- Vehicle has ABS
+---@field ignitionLevel number          -- 0–3 : 0=off,1=acc,2=on,3=starter
+---@field lowpressure number            -- 0 or 1 : Tire deflated
+---@field odometer number               -- meters : Total distance traveled
+---@field oil number                    -- 0 or 1 : Oil >130°C warning
+---@field trip number                   -- meters : Trip counter
+---@field wheelspeed number             -- m/s : Vehicle wheel speed
+-- Misc
+---@field nop number                    -- Always 0
+
+---@class Electrics
+---@field values ElectricsValues
+
+---@type Electrics
+electrics = electrics
+v = v
+
+return {}

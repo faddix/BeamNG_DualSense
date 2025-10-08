@@ -4,7 +4,7 @@
 
 -- Configuration variables for the DSX extension
 return {
-    VERSION = "2.40",           -- Extension version
+    VERSION = "2.41",           -- Extension version
     DSX_IP = "127.0.0.1",       -- IP address of the DSX server
     DSX_PORT = 6969,            -- Port number of the DSX server
     CONTROLLER_INDEX = 0,       -- Controller index (0 for first controller, 1 for second controller, etc.)
@@ -18,12 +18,13 @@ return {
         MAX = 200               -- Maximum rev limiter cut time
     },
     LED_CONFIG = {
-        RPM_HUE_FACTOR = 1.2,               -- Factor to multiply RPM by to get hue
-        RPM_HUE_SCALE = 1.3,                -- Scale to apply to hue
-        RPM_CLAMP_LOW = 0,                  -- Lower bound for RPM clamping
-        RPM_CLAMP_HIGH = 0.33,              -- Upper bound for RPM clamping
-        TARGET_RPM_DECREMENT_OFF = 0.06,    -- Decrement for target RPM after threshold is met
-        TARGET_RPM_DECREMENT_ON = 0.053     -- Decrement for target RPM before threshold is met
+        RPM_HUE_FACTOR = 1.2,                   -- Factor to multiply RPM by to get hue
+        RPM_HUE_SCALE = 1.3,                    -- Scale to apply to hue
+        RPM_CLAMP_LOW = 0,                      -- Lower bound for RPM clamping
+        RPM_CLAMP_HIGH = 0.33,                  -- Upper bound for RPM clamping
+        TARGET_RPM_DECREMENT_OFF = 0.06,        -- Decrement for target RPM after threshold is met
+        TARGET_RPM_DECREMENT_ON = 0.053,        -- Decrement for target RPM before threshold is met
+        TURN_SIGNAL_COLOR = vec3(255, 200, 0) -- Yellow color for turn signals (RGB)
     },
     STALL_LED_CONFIG = {                    -- Configuration for Stalling LEDs
         FLASH_INTERVAL_MS = 500,            -- Interval for flashing stalling LEDs in milliseconds
@@ -60,5 +61,8 @@ return {
     NETWORK = {
         MIN_PACKET_INTERVAL = 1/60, -- Minimum time between packets (60hz max)
         RETRY_COOLDOWN = 0.1,       -- Time to wait between retries
-    }
+    },
+    LOW_FUEL_CONFIG = {
+        FLASH_INTERVAL_MS = 500,    -- Low fuel warning flash interval in milliseconds
+    },
 }

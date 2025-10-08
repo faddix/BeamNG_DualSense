@@ -554,7 +554,7 @@ function DSX:generateNoEnginePresentPacket()
     return instructions
 end
 
---- Generates RPM LED instructions.
+--- Generates RPM LED instructions with turn signal override.
 -- @param rpmPercent Percentage of RPM relative to maxRPM, clamped between 0 and 1.
 -- @param maxRPM Maximum RPM of the engine.
 -- @param cutTime Rev limiter cut time.
@@ -571,18 +571,28 @@ function DSX:generateRPMLEDs(rpmPercent, maxRPM, cutTime)
         return {}
     end
 
-    local ledHue = clamp(CONFIG.LED_CONFIG.RPM_HUE_FACTOR - (rpmPercent * CONFIG.LED_CONFIG.RPM_HUE_SCALE), CONFIG.LED_CONFIG.RPM_CLAMP_LOW, CONFIG.LED_CONFIG.RPM_CLAMP_HIGH)
-    local ledRGB = self.ledsOn and HSVtoRGB(ledHue, 1, clamp(rpmPercent, 0, 1)) or vec3(0, 0, 0)
+    local ledRGB
+    -- Check for turn signal activation (turn signal overrides RPM display)
+    local isTurnSignalActive = toBoolean(electrics.values.signal_left_input) or toBoolean(electrics.values.signal_right_input)
 
-    if (electrics.values.rpm or 0) >= self.targetRPM then
-        self.targetRPM = maxRPM - (maxRPM * CONFIG.LED_CONFIG.TARGET_RPM_DECREMENT_OFF)
-        if self.timeMs - self.lastChangedLed > cutTime then
-            self.lastChangedLed = self.timeMs
-            self.ledsOn = not self.ledsOn
-        end
+    if isTurnSignalActive then
+        local isOn = toBoolean(electrics.values.signal_L) or toBoolean(electrics.values.signal_R)
+        ledRGB = isOn and CONFIG.LED_CONFIG.TURN_SIGNAL_COLOR or vec3(0, 0, 0)
     else
-        self.ledsOn = true
-        self.targetRPM = maxRPM - (maxRPM * CONFIG.LED_CONFIG.TARGET_RPM_DECREMENT_ON)
+        local ledHue = clamp(CONFIG.LED_CONFIG.RPM_HUE_FACTOR - (rpmPercent * CONFIG.LED_CONFIG.RPM_HUE_SCALE), CONFIG.LED_CONFIG.RPM_CLAMP_LOW, CONFIG.LED_CONFIG.RPM_CLAMP_HIGH)
+        ledRGB = self.ledsOn and HSVtoRGB(ledHue, 1, clamp(rpmPercent, 0, 1)) or vec3(0, 0, 0)
+
+        -- Handle RPM-based LED toggling for rev limiter
+        if (electrics.values.rpm or 0) >= self.targetRPM then
+            self.targetRPM = maxRPM - (maxRPM * CONFIG.LED_CONFIG.TARGET_RPM_DECREMENT_OFF)
+            if self.timeMs - self.lastChangedLed > cutTime then
+                self.lastChangedLed = self.timeMs
+                self.ledsOn = not self.ledsOn
+            end
+        else
+            self.ledsOn = true
+            self.targetRPM = maxRPM - (maxRPM * CONFIG.LED_CONFIG.TARGET_RPM_DECREMENT_ON)
+        end
     end
 
     local instructions = {
@@ -628,16 +638,24 @@ function DSX:generateGearLightsPacket(gear)
     return instructions
 end
 
---- Checks if the engine temperature is above the warning threshold.
--- @return Boolean indicating if the engine temperature is above the warning threshold.
+--- Checks engine temperature and low fuel status for mic LED warnings.
+-- Priority: Engine Temperature > Low Fuel > Off
+-- @return Mic LED mode based on vehicle status.
 function DSX:checkEngineTemperature()
     -- Use water temperature for all engines
     local temp = electrics.values.watertemp or 0
+    local lowFuel = toBoolean(electrics.values.lowfuel or 0)
 
+    -- Engine temperature has priority over low fuel
     if temp >= CONFIG.TEMPERATURE.TEMP_WARNING then
         return MicLEDMode.On
     elseif temp >= CONFIG.TEMPERATURE.TEMP_PULSE then
         return MicLEDMode.Pulse
+    elseif lowFuel then
+        -- Low fuel warning - flash based on config interval
+        local flashInterval = CONFIG.LOW_FUEL_CONFIG.FLASH_INTERVAL_MS
+        local phase = (self.timeMs % (flashInterval * 2)) / (flashInterval * 2)
+        return phase < 0.5 and MicLEDMode.On or MicLEDMode.Off
     else
         return MicLEDMode.Off
     end
