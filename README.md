@@ -1,6 +1,7 @@
 # 🎮 DSX - DualSense Adaptive Triggers & Haptics for BeamNG.drive
 
-[![BeamNG.drive](https://img.shields.io/badge/BeamNG.drive-Mod-blue)](https://beamng.com) [![DualSense](https://img.shields.io/badge/DualSense-Controller-informational)](https://www.playstation.com/en-us/accessories/dualsense-wireless-controller/) [![DSX](https://img.shields.io/badge/DSX-App-informational)](store.steampowered.com/app/1812620/DSX/)
+[![BeamNG.drive](https://img.shields.io/badge/BeamNG.drive-Mod-blue)](https://beamng.com) [![DualSense](https://img.shields.io/badge/DualSense-Controller-informational)](https://www.playstation.com/en-us/accessories/dualsense-wireless-controller/) [![DSX](https://img.shields.io/badge/DSX-App-informational)](https://store.steampowered.com/app/1812620/DSX/)
+
 Enhance your driving immersion in **BeamNG.drive** with full support for the PlayStation 5 **DualSense** controller. This mod integrates with the **DSX App** to bring real-time adaptive trigger feedback, RPM-reactive LEDs, gear indicators, and thermal alerts — all mapped from your vehicle's telemetry.
 
 > **Note:** This mod is currently in beta, feel free to open feature requests and provide feedback on the GitHub [issues](https://github.com/faddix/BeamNG_DualSense/issues) page.
