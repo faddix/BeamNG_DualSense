@@ -1,129 +1,53 @@
-# 🎮 DSX - DualSense Adaptive Triggers & Haptics for BeamNG.drive
+# BNG_DSX - DualSense adaptive triggers and lighting for BeamNG.drive
 
 [![BeamNG.drive](https://img.shields.io/badge/BeamNG.drive-Mod-blue)](https://beamng.com) [![DualSense](https://img.shields.io/badge/DualSense-Controller-informational)](https://www.playstation.com/en-us/accessories/dualsense-wireless-controller/) [![DSX](https://img.shields.io/badge/DSX-App-informational)](https://store.steampowered.com/app/1812620/DSX/)
 
-Enhance your driving immersion in **BeamNG.drive** with full support for the PlayStation 5 **DualSense** controller. This mod integrates with the **DSX App** to bring real-time adaptive trigger feedback, RPM-reactive LEDs, gear indicators, and thermal alerts — all mapped from your vehicle's telemetry.
+- Throttle feedback from wheel slip and brake feedback from ABS.
+- RPM lighting, rev-limiter flashes and turn signals.
+- Gear indicators on supported controllers.
+- Engine temperature, low-fuel, stall and check-engine warnings.
+- In-game settings and custom profiles.
 
-> **Note:** This mod is currently in beta, feel free to open feature requests and provide feedback on the GitHub [issues](https://github.com/faddix/BeamNG_DualSense/issues) page.
----
+## Installation
 
-## 🚗 Features
+Install **DualSense integration via DSX** from BeamNG's mod repository, or download it from [GitHub releases](https://github.com/faddix/BeamNG_DualSense/releases) or the [BeamNG mod page](https://www.beamng.com/resources/dualsense-integration-via-dsx.36016/).
 
-### 🎯 Adaptive Triggers
-- **Throttle Feedback:** Simulates traction loss and wheel slip on the right trigger with automatic gun mode
-- **Brake Resistance:** Variable resistance with ABS feedback on the left trigger, with simulation for power brakes
-- **Dynamic Modes:** Trigger behavior adapts based on engine state, clutch engagement, and wheel slip
+For a manual install, put the ZIP in your BeamNG user folder's `mods` directory without extracting it. Keep only one copy enabled, then restart the game.
 
-### 💡 LED Indicators
-- **RPM LED Bar:** Real-time RPM visualization using HSV color mapping with rev-limiter flash effects
-- **Turn Signals:** Displays turn signals with yellow flashing indicators
-- **Gear Indicator Lights:** Player LEDs show current gear with support for reverse and multi-gear configurations
-  - *Note: Only available on DualSense V1 and Edge models due to hardware limitations*
-- **Engine Temperature Alerts:** Microphone LED indicates overheating with pulse and warning modes
-- **Low Fuel Alerts:** Microphone LED indicates low fuel with flashing effects
-- **Engine Status:** Visual feedback for stall conditions and check engine warnings with fade effects
+Connect your controller and open DSX. Under **Settings → Networking**, enable **Incoming UDP** and set the address to `127.0.0.1` and the port to `6969`.
 
----
+## Settings
 
-## 📦 Installation
+In BeamNG's **HUD Apps / UI Apps** editor, choose **Add App → DSX Settings**. Click the small DSX Settings button to open the panel.
 
-### 1. Install DSX
-Get DSX from the [Steam store page](https://store.steampowered.com/app/1812620/DSX/).
+Change the controls and click **Apply & Save**. **Reset to Defaults** fills the form with defaults; click Apply & Save to use them. **Discard & reload** clears unsaved edits.
 
-### 2. Install the Mod
-**Via BeamNG Mod Repository (Recommended):**
-- Search for "DualSense integration via DSX" in the in-game mod repository
+Use **Collapse** to tuck the panel away while driving. To resize it, select DSX Settings in **HUD Apps → Edit Layout**, drag an edge or corner, then save the layout.
 
-**Manual Installation (Alternative):**
-  - A. Download the [BNG_DSX.zip](https://github.com/faddix/BeamNG_DualSense/releases) file from GitHub and extract it into your `mods/repo` folder
-  - B. Download the latest version from the BeamNG Mod Page [here](https://www.beamng.com/resources/dualsense-integration-via-dsx.36016/), then move the `BNG_DSX.zip` folder into your `mods/repo` folder (you can find it by clicking the "Open Mod folder" button in the BeamNG Mods Page)
-### 3. Configure DSX
-- Open the DSX app
-- Go to **Settings > Networking**
-- Enable **Incoming UDP**
-- Set **IP Address** to `127.0.0.1` and **Port number** to `6969`
+### Profiles
 
-### 4. Customize (Optional)
-Edit `config.lua` to adjust trigger forces, LED colors, temperature thresholds, and network settings.
+Open **Profiles**, enter a name and click **Save new** to save the current form. Profiles include the connection settings.
 
----
+To use one, click the profile selector, choose a name, then click **Load → Apply & Save**. **Update selected** saves the current form over that profile. You can also rename or delete it.
 
-## ⚙️ Configuration
+Saving a profile does not activate it. Applying settings does not update a profile automatically.
 
-Key settings in `config.lua`:
+## Troubleshooting
 
-```lua
-CONFIG.DSX_IP = "127.0.0.1"       -- DSX server IP
-CONFIG.DSX_PORT = 6969            -- DSX server port
-CONFIG.CONTROLLER_INDEX = 0       -- Controller number (0-3)
-```
+If there's no feedback:
 
-**Network Settings:**
-- `MIN_PACKET_INTERVAL`: Minimum time between packets (default: 1/60 for 60Hz max)
-- `MAX_RETRIES`: Number of retry attempts for failed sends
+- Check that DSX recognizes the controller and Incoming UDP is enabled.
+- Make sure the address and port match in DSX and the mod's settings.
+- Check that the mod is enabled, then try **Reconnect saved target**.
 
----
+Report bugs or request features on [GitHub](https://github.com/faddix/BeamNG_DualSense/issues).
 
-## 🧰 Dependencies
+## Credits
 
-- **[DSX Windows Driver](https://store.steampowered.com/app/1812620/DSX/)** (Required)
-- **LuaSocket** - UDP networking (included with BeamNG)
-- **LuaJSON** - JSON encoding/decoding (included with BeamNG)
+- **[Paliverse](https://github.com/Paliverse)** — DSX.
+- **Kirbyguy** — original adaptive trigger implementation.
+- **[LuaJSON](https://github.com/harningt/luajson)** and **[LuaSocket](https://w3.impa.br/~diego/software/luasocket/)**.
 
----
-
-## 🧠 How It Works
-
-The mod runs in BeamNG's Lua environment with these components:
-
-1. **Telemetry Reading:** Monitors vehicle systems including engine, electrics, and drivetrain
-2. **State Processing:** Determines appropriate controller responses based on:
-   - Engine RPM and temperature
-   - Gear position and wheel slip
-   - ABS status and stall conditions
-3. **Packet Generation:** Creates instruction packets for triggers, LEDs, and audio indicators
-4. **UDP Transmission:** Sends JSON packets to DSX at 60Hz with rate limiting and retry logic
-
-**Performance Optimizations:**
-- Caches frequently used functions and tables
-- Implements packet timing controls to prevent network flooding
-- Uses efficient table reuse to minimize garbage collection
-
----
-
-## 🧹 Troubleshooting
-
-**Controller Not Detected?**
-- Verify DualSense is connected and recognized in DSX
-- Check Windows device manager for controller drivers
-
-**No Feedback?**
-- Confirm DSX UDP server is enabled and IP/port match `config.lua`
-- If using wireless mode, 
-- Check BeamNG console for error messages
-- Ensure mod is loaded in BeamNG (check Mods menu)
-
-**Performance Issues?**
-- Increase `MIN_PACKET_INTERVAL` in `config.lua` to reduce update frequency
-- Close unnecessary background applications
-
-**Network Errors?**
-- Verify firewall isn't blocking UDP traffic on port 6969
-- Ensure DSX and BeamNG are on the same machine (127.0.0.1)
-
----
-
-## 🙌 Credits
-
-- **[Paliverse](https://github.com/Paliverse)** - DSX creator
-- **Kirbyguy** - Original DSX adaptive triggers implementation
-- **[LuaJSON](https://github.com/harningt/luajson)** - JSON parsing
-- **[LuaSocket](https://w3.impa.br/~diego/software/luasocket/)** - Network communication
-
-Special thanks to the BeamNG modding community for their support and feedback.
-
----
-
-## 📄 License
+## License
 
 Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.

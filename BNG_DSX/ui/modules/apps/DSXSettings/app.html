@@ -1,0 +1,420 @@
+<div class="bngApp dsx-settings" ng-class="{'dsx-collapsed': dsx.collapsed}">
+    <style>
+        .dsx-settings {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-sizing: border-box;
+            background: rgba(24, 28, 34, 0.97);
+            color: #edf0f5;
+            font:
+                14px/1.4 "Segoe UI",
+                sans-serif;
+            border: 1px solid #59616e;
+            border-radius: 8px;
+        }
+        .dsx-settings * {
+            box-sizing: border-box;
+        }
+        .dsx-settings .dsx-header {
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid #46505e;
+            flex-shrink: 0;
+        }
+        .dsx-settings .dsx-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+        .dsx-settings .dsx-collapse {
+            flex-shrink: 0;
+            font-size: 12px;
+        }
+        .dsx-settings.dsx-collapsed {
+            width: max-content;
+            max-width: 100%;
+            height: auto;
+            background: transparent;
+            border: 0;
+            pointer-events: none;
+        }
+        /* BeamNG keeps a full-size host; only our reopen button should catch clicks */
+        .ui-app-host:has(.dsx-settings.dsx-collapsed) {
+            pointer-events: none;
+        }
+        .dsx-settings .dsx-restore {
+            pointer-events: auto;
+            background: rgba(24, 28, 34, 0.42);
+            border-color: rgba(190, 205, 225, 0.35);
+            padding: 4px 8px;
+            font-size: 12px;
+            line-height: 1.3;
+            font-weight: 500;
+        }
+        .dsx-settings .dsx-restore:hover:enabled,
+        .dsx-settings .dsx-restore:focus-visible {
+            background: rgba(24, 28, 34, 0.78);
+        }
+        .dsx-settings .dsx-profiles {
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #46505e;
+        }
+        .dsx-settings .dsx-profile-row {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+            margin: 7px 0;
+        }
+        .dsx-settings .dsx-profile-row input {
+            flex: 1;
+            width: 0;
+            min-width: 0;
+            padding: 6px;
+            background: #171d26;
+            color: #fff;
+            border: 1px solid #798597;
+            border-radius: 3px;
+            font: inherit;
+        }
+        .dsx-settings .dsx-profile-picker-toggle {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            text-align: left;
+            background: #171d26;
+        }
+        .dsx-settings .dsx-profile-picker-toggle span:first-child {
+            overflow-wrap: anywhere;
+        }
+        .dsx-settings .dsx-profile-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 4px;
+            margin-bottom: 8px;
+            border: 1px solid #798597;
+            border-radius: 3px;
+            background: #171d26;
+        }
+        .dsx-settings .dsx-profile-list button {
+            width: 100%;
+            flex-shrink: 0;
+            text-align: left;
+            overflow-wrap: anywhere;
+        }
+        .dsx-settings .dsx-profile-list button[aria-pressed="true"] {
+            background: #455e79;
+            border-color: #94caff;
+        }
+        .dsx-settings .dsx-profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 8px 0;
+        }
+        .dsx-settings .dsx-profiles button {
+            font-size: 12px;
+        }
+        .dsx-settings .dsx-profiles .dsx-group-toggle {
+            font-size: 14px;
+            padding: 3px 0;
+        }
+        .dsx-settings .dsx-delete {
+            color: #ffc0b5;
+        }
+        .dsx-settings .dsx-unsaved-dot {
+            color: #ffd88a;
+            margin-left: 6px;
+        }
+        .dsx-settings h2 {
+            margin: 0 0 3px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .dsx-settings p {
+            margin: 0;
+        }
+        .dsx-settings .dsx-muted {
+            color: #c0c8d3;
+            font-size: 12px;
+        }
+        .dsx-settings .dsx-body {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 0;
+            padding: 12px 16px;
+        }
+        .dsx-settings .dsx-status {
+            background: #252d38;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+        .dsx-settings .dsx-status-title {
+            font-weight: 600;
+        }
+        .dsx-settings .dsx-ready {
+            color: #a3e0b2;
+        }
+        .dsx-settings .dsx-status-grid {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 2px 12px;
+            margin: 6px 0;
+            font-size: 12px;
+        }
+        .dsx-settings .dsx-status-grid dt {
+            color: #c0c8d3;
+        }
+        .dsx-settings .dsx-status-grid dd {
+            margin: 0;
+            overflow-wrap: anywhere;
+        }
+        .dsx-settings .dsx-message {
+            margin: 8px 0;
+            font-size: 12px;
+        }
+        .dsx-settings .dsx-error {
+            color: #ffc0b5;
+        }
+        .dsx-settings fieldset {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            min-width: 0;
+        }
+        .dsx-settings .dsx-group {
+            border-top: 1px solid #46505e;
+        }
+        .dsx-settings button {
+            font: inherit;
+            cursor: pointer;
+            color: #edf0f5;
+            background: #343e4d;
+            border: 1px solid #687589;
+            border-radius: 4px;
+            padding: 7px 10px;
+        }
+        .dsx-settings button:hover:enabled {
+            background: #465365;
+        }
+        .dsx-settings button:focus-visible,
+        .dsx-settings input:focus-visible {
+            outline: 2px solid #94caff;
+            outline-offset: 2px;
+        }
+        .dsx-settings button:disabled {
+            opacity: 0.5;
+            cursor: default;
+        }
+        .dsx-settings .dsx-group-toggle {
+            width: 100%;
+            text-align: left;
+            padding: 11px 0;
+            border: 0;
+            border-radius: 0;
+            background: none;
+            font-weight: 600;
+        }
+        .dsx-settings .dsx-group-toggle:hover:enabled {
+            background: #252d38;
+        }
+        .dsx-settings .dsx-group-toggle span {
+            display: inline-block;
+            width: 18px;
+            color: #a6cfff;
+        }
+        .dsx-settings .dsx-field {
+            padding: 3px 0 13px;
+        }
+        .dsx-settings .dsx-field-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        .dsx-settings .dsx-field-row label {
+            flex: 1;
+        }
+        .dsx-settings .dsx-input {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dsx-settings input {
+            min-width: 0;
+            font: inherit;
+            background: #171d26;
+            color: #fff;
+            border: 1px solid #798597;
+            border-radius: 3px;
+            padding: 5px 7px;
+        }
+        .dsx-settings input[type="number"] {
+            width: 105px;
+        }
+        .dsx-settings input[type="text"] {
+            width: 155px;
+        }
+        .dsx-settings input[type="checkbox"] {
+            width: 19px;
+            height: 19px;
+            accent-color: #88bfff;
+            margin: 3px;
+        }
+        .dsx-settings input[type="color"] {
+            padding: 1px;
+            width: 30px;
+            height: 29px;
+        }
+        .dsx-settings .dsx-hex {
+            width: 92px !important;
+        }
+        .dsx-settings .dsx-field-help {
+            margin-top: 4px;
+        }
+        .dsx-settings .dsx-footer {
+            flex-shrink: 0;
+            border-top: 1px solid #46505e;
+            padding: 10px 16px 12px;
+            background: #202730;
+        }
+        .dsx-settings .dsx-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 7px;
+        }
+        .dsx-settings .dsx-primary {
+            background: #93c5fd;
+            color: #13243a;
+            border-color: #b6d9ff;
+            font-weight: 600;
+        }
+        .dsx-settings .dsx-primary:hover:enabled {
+            background: #b6d9ff;
+        }
+        .dsx-settings .dsx-small-button {
+            margin-top: 7px;
+            font-size: 12px;
+            padding: 4px 8px;
+        }
+    </style>
+
+    <button type="button" class="dsx-restore" ng-show="dsx.collapsed" ng-click="dsx.toggleCollapsed()" aria-expanded="false" title="Open DSX settings">DSX Settings<span class="dsx-unsaved-dot" ng-if="dsx.dirty" aria-label="Unsaved changes">●</span></button>
+
+    <header class="dsx-header" ng-show="!dsx.collapsed">
+        <div class="dsx-heading">
+            <div>
+                <h2>DSX Settings</h2>
+                <p class="dsx-muted">DualSense triggers, lights and connection</p>
+            </div>
+            <button type="button" class="dsx-collapse" ng-click="dsx.toggleCollapsed()" aria-expanded="true" title="Collapse to a small button; keep unsaved edits">Collapse</button>
+        </div>
+    </header>
+
+    <div class="dsx-body" ng-show="!dsx.collapsed">
+        <section class="dsx-profiles" aria-label="Settings profiles">
+            <button type="button" class="dsx-group-toggle" ng-click="dsx.profilesOpen = !dsx.profilesOpen" aria-expanded="{{dsx.profilesOpen}}"><span aria-hidden="true">{{dsx.profilesOpen ? '▾' : '▸'}}</span>Profiles <span ng-if="dsx.profileNames.length">({{dsx.profileNames.length}})</span></button>
+            <div ng-show="dsx.profilesOpen">
+                <p class="dsx-muted">Profiles store the whole form, including the connection. Load one to review it, then Apply &amp; Save.</p>
+                <fieldset ng-disabled="!dsx.ready || dsx.busy || dsx.profileBusy">
+                    <div class="dsx-profile-row">
+                        <button type="button" class="dsx-profile-picker-toggle" aria-label="Saved profile" aria-expanded="{{dsx.profilePickerOpen}}" ng-click="dsx.profilePickerOpen = !dsx.profilePickerOpen" ng-disabled="!dsx.profileNames.length">
+                            <span>{{dsx.selectedProfile || (dsx.profileNames.length ? 'Select a profile' : 'No profiles saved yet')}}</span>
+                            <span aria-hidden="true">{{dsx.profilePickerOpen ? '▴' : '▾'}}</span>
+                        </button>
+                        <button type="button" ng-click="dsx.loadProfile()" ng-disabled="!dsx.selectedProfile">Load</button>
+                    </div>
+                    <div class="dsx-profile-list" ng-show="dsx.profilePickerOpen && dsx.profileNames.length" role="group" aria-label="Saved profiles">
+                        <button type="button" ng-repeat="name in dsx.profileNames track by name" ng-click="dsx.selectProfile(name)" aria-pressed="{{name === dsx.selectedProfile}}">{{name}}</button>
+                    </div>
+                    <div class="dsx-profile-row">
+                        <input type="text" aria-label="Profile name" placeholder="New name, e.g. Rally" maxlength="40" ng-model="dsx.profileName" ng-change="dsx.deleteArmed = false" />
+                        <button type="button" ng-click="dsx.saveProfile(false)" ng-disabled="!dsx.profileName.trim()">Save new</button>
+                    </div>
+                    <div class="dsx-profile-actions">
+                        <button type="button" ng-click="dsx.saveProfile(true)" ng-disabled="!dsx.selectedProfile" title="Replace the selected profile with the current form">Update selected</button>
+                        <button type="button" ng-click="dsx.renameProfile()" ng-disabled="!dsx.selectedProfile || !dsx.profileName.trim() || dsx.profileName.trim() === dsx.selectedProfile" title="Rename the selected profile using the name above">Rename</button>
+                        <button type="button" class="dsx-delete" ng-click="dsx.deleteProfile()" ng-disabled="!dsx.selectedProfile">{{dsx.deleteArmed ? 'Confirm delete' : 'Delete'}}</button>
+                        <button type="button" ng-if="dsx.deleteArmed" ng-click="dsx.deleteArmed = false">Cancel</button>
+                    </div>
+                </fieldset>
+                <p class="dsx-message dsx-error" ng-if="dsx.deleteArmed">Delete profile “{{dsx.selectedProfile}}”? Current driving settings stay active.</p>
+                <p class="dsx-muted" ng-if="dsx.profileBusy">Waiting for profile response…</p>
+                <p class="dsx-message" ng-if="dsx.profileMessage" role="status">{{dsx.profileMessage}}</p>
+                <p class="dsx-message dsx-error" ng-if="dsx.profileError" role="alert">{{dsx.profileError}}</p>
+            </div>
+            <p class="dsx-message dsx-error" ng-if="dsx.profileWarning">{{dsx.profileWarning}}</p>
+        </section>
+        <section class="dsx-status" aria-label="DSX runtime status">
+            <div class="dsx-status-title" ng-class="{'dsx-ready': !dsx.statusStale && dsx.status.socketActive}">
+                <span ng-if="dsx.statusStale">Waiting for vehicle status</span>
+                <span ng-if="!dsx.statusStale && !dsx.status.active">No active vehicle extension</span>
+                <span ng-if="!dsx.statusStale && dsx.status.active && !dsx.status.socketActive">Vehicle active · UDP unavailable</span>
+                <span ng-if="!dsx.statusStale && dsx.status.active && dsx.status.socketActive">Vehicle active · UDP ready</span>
+            </div>
+            <dl class="dsx-status-grid">
+                <dt>Saved target</dt>
+                <dd>{{dsx.status.ip || dsx.saved.DSX_IP || '—'}}:{{dsx.status.port || dsx.saved.DSX_PORT || '—'}}</dd>
+                <dt>Engine</dt>
+                <dd>{{dsx.statusStale ? '—' : (dsx.status.engine || 'None detected')}}</dd>
+                <dt>RPM / Gear</dt>
+                <dd>{{dsx.statusStale || dsx.status.rpm == null ? '—' : (dsx.status.rpm | number:0)}} / {{dsx.statusStale || dsx.status.gear == null ? '—' : dsx.status.gear}}</dd>
+            </dl>
+            <p class="dsx-muted">UDP ready means a local socket is open. The mod cannot verify that DSX receives packets. Enable Incoming UDP in DSX.</p>
+            <p class="dsx-error dsx-message" ng-if="dsx.status.error">{{dsx.status.error}}</p>
+            <button type="button" class="dsx-small-button" ng-click="dsx.reconnect()" ng-disabled="!dsx.ready || dsx.busy || dsx.profileBusy">Reconnect saved target</button>
+        </section>
+
+        <p class="dsx-muted" ng-if="!dsx.ready">Loading settings from BeamNG…</p>
+        <form novalidate ng-submit="dsx.apply()" ng-if="dsx.ready" aria-label="DSX configuration">
+            <fieldset ng-disabled="dsx.busy || dsx.profileBusy">
+                <section class="dsx-group" ng-repeat="group in dsx.groups track by group.name">
+                    <button type="button" class="dsx-group-toggle" ng-click="group.open = !group.open" aria-expanded="{{group.open}}"><span aria-hidden="true">{{group.open ? '▾' : '▸'}}</span>{{group.name}}</button>
+                    <div ng-show="group.open">
+                        <div class="dsx-field" ng-repeat="field in group.fields track by field.key">
+                            <div class="dsx-field-row">
+                                <label for="dsx-field-{{field.key}}">{{field.label}}</label>
+                                <div class="dsx-input" ng-switch="field.kind">
+                                    <input ng-switch-when="boolean" id="dsx-field-{{field.key}}" type="checkbox" ng-model="dsx.values[field.key]" ng-change="dsx.changed(field)" />
+                                    <input ng-switch-when="number" id="dsx-field-{{field.key}}" type="number" ng-model="dsx.values[field.key]" ng-model-options="{allowInvalid: true}" ng-change="dsx.changed(field)" ng-attr-min="{{field.min}}" ng-attr-max="{{field.max}}" ng-attr-step="{{field.step || 'any'}}" required />
+                                    <span ng-switch-when="color" class="dsx-input">
+                                        <input type="color" aria-label="{{field.label}} color picker" ng-model="dsx.values[field.key]" ng-change="dsx.changed(field)" />
+                                        <input id="dsx-field-{{field.key}}" class="dsx-hex" type="text" maxlength="7" spellcheck="false" ng-model="dsx.values[field.key]" ng-change="dsx.changed(field)" placeholder="#RRGGBB" required />
+                                    </span>
+                                    <input ng-switch-default id="dsx-field-{{field.key}}" type="text" spellcheck="false" ng-model="dsx.values[field.key]" ng-change="dsx.changed(field)" required />
+                                </div>
+                            </div>
+                            <p class="dsx-muted dsx-field-help" ng-if="field.description">{{field.description}}</p>
+                            <p class="dsx-muted" ng-if="field.kind === 'number' && field.min != null && field.max != null">Range: {{field.min}} to {{field.max}}</p>
+                            <p class="dsx-error dsx-message" ng-if="dsx.errors[field.key]" role="alert">{{dsx.errors[field.key]}}</p>
+                        </div>
+                    </div>
+                </section>
+            </fieldset>
+        </form>
+    </div>
+
+    <footer class="dsx-footer" ng-show="!dsx.collapsed">
+        <p class="dsx-error dsx-message" ng-if="dsx.errors._general" role="alert">{{dsx.errors._general}}</p>
+        <p class="dsx-error dsx-message" ng-if="dsx.error" role="alert">{{dsx.error}}</p>
+        <p class="dsx-message" ng-if="dsx.message" role="status">{{dsx.message}}</p>
+        <p class="dsx-muted">{{dsx.busy || dsx.profileBusy ? 'Waiting for BeamNG…' : (dsx.dirty ? 'Unsaved changes' : (dsx.ready ? 'Saved settings loaded' : 'Settings unavailable until BeamNG responds'))}}</p>
+        <div class="dsx-actions">
+            <button type="button" class="dsx-primary" ng-click="dsx.apply()" ng-disabled="!dsx.ready || dsx.busy || dsx.profileBusy">Apply &amp; Save</button>
+            <button type="button" ng-click="dsx.reset()" ng-disabled="!dsx.ready || dsx.busy || dsx.profileBusy">Reset to Defaults</button>
+            <button type="button" ng-click="dsx.reload()" ng-disabled="dsx.busy || dsx.profileBusy" title="Replace the form with the current saved settings">{{dsx.dirty ? 'Discard & reload' : 'Reload saved'}}</button>
+        </div>
+    </footer>
+</div>

@@ -1,7 +1,7 @@
 ---@class ElectricsValues
 -- Vehicle Controls
 ---@field brake_input number            -- 0–1 : Brake input
----@field clutch number                 -- 0–1 : Clutch output
+---@field clutch number|boolean|nil                 -- 0–1 : Clutch output
 ---@field clutch_input number           -- 0–1 : Clutch input
 ---@field clutchRatio number            -- 0-1 : Clutch input percentage
 ---@field horn number                   -- 0 or 1 : Indicates horn is active
@@ -15,27 +15,27 @@
 ---@field throttle_input number         -- 0–1 : Throttle input
 -- Engine & Powertrain
 ---@field engineLoad number             -- 0-1 : Engine load percentage based on torque 
----@field engineRunning boolean         -- Whether engine is currently running
+---@field engineRunning boolean|number|nil         -- Whether engine is currently running
 ---@field engineThrottle number         -- 0–1 : Effective throttle level, 0 if engine disabled
----@field rpm number                    -- RPM : Engine rotation speed in RPM
+---@field rpm number|nil                    -- RPM : Engine rotation speed in RPM
 ---@field rpmTacho number               -- RPM : Smoothed engine speed for gauges
 ---@field rpmspin number                -- Degrees : For rotating pulley props
 ---@field running boolean|number        -- 0=off,1=on,false=no ignition
----@field checkengine boolean           -- Whether engine is disabled due to issues
+---@field checkengine boolean|number|nil           -- Whether engine is disabled due to issues
 ---@field oiltemp number                -- Oil temperature in Celsius
----@field watertemp number              -- Water/coolant temperature in Celsius
+---@field watertemp number|nil              -- Water/coolant temperature in Celsius
 ---@field radiatorFanSpin number        -- 0-360 : Radiator fan spin animation value
 -- Transmission
 ---@field gear string                   -- Currently selected gear (includes shifter position for auto)
 ---@field gear_A number                 -- Current shifter position for auto/DCT (0 to 1)
----@field gearIndex number              -- Current gear number (negative=reverse, 0=neutral)
+---@field gearIndex number|nil              -- Current gear number (negative=reverse, 0=neutral)
 ---@field isShifting boolean            -- Whether transmission is currently shifting
 ---@field smoothShiftLogicAV number     -- Smoothed AV for shift logic calculations
 -- Fuel System
 ---@field fuel number                   -- 0–1 : Fuel ratio remaining
 ---@field fuelCapacity number           -- Fuel tank capacity in liters
 ---@field fuelVolume number             -- Current fuel volume in liters
----@field lowfuel number                -- 0 or 1 : Fuel <10%
+---@field lowfuel boolean|number|nil                -- 0 or 1 : Fuel <10%
 -- Lights
 ---@field brakelight_signal_R number    -- 0 or 1 : Brake + right signal combo (US-style)
 ---@field brakelight_signal_L number    -- 0 or 1 : Brake + left signal combo (US-style)
@@ -57,13 +57,13 @@
 ---@field parkingbrakelight number      -- 0 or 1 : Parking brake light output
 ---@field reverse_wigwag_R number       -- 0 or 1 : Right reverse wigwag (police)
 ---@field reverse_wigwag_L number       -- 0 or 1 : Left reverse wigwag (police)
----@field signal_L number               -- 0 or 1 : Left signal flashing
----@field signal_R number               -- 0 or 1 : Right signal flashing
----@field signal_left_input number      -- 0 or 1 : Left indicator selected
----@field signal_right_input number     -- 0 or 1 : Right indicator selected
+---@field signal_L boolean|number|nil               -- 0 or 1 : Left signal flashing
+---@field signal_R boolean|number|nil               -- 0 or 1 : Right signal flashing
+---@field signal_left_input boolean|number|nil      -- 0 or 1 : Left indicator selected
+---@field signal_right_input boolean|number|nil     -- 0 or 1 : Right indicator selected
 ---@field turnsignal number             -- -1,0,1 : Active turn signal (-1=left,1=right)
 -- Vehicle Status
----@field absActive boolean             -- Whether ABS is active
+---@field absActive boolean|number|nil             -- Whether ABS is active
 ---@field accXSmooth number             -- m/s² : X-axis acceleration
 ---@field accYSmooth number             -- m/s² : Y-axis acceleration
 ---@field accZSmooth number             -- m/s² : Z-axis acceleration
@@ -75,8 +75,8 @@
 ---@field boostMax number               -- PSI : Maximum boost achievable
 ---@field electricalLoadCoef number     -- 0–1 : Electrical load (starter, etc.)
 ---@field gearboxMode string            -- Selected gearbox mode
----@field hasABS boolean                -- Vehicle has ABS
----@field ignitionLevel number          -- 0–3 : 0=off,1=acc,2=on,3=starter
+---@field hasABS boolean|number|nil                -- Vehicle has ABS
+---@field ignitionLevel number|nil          -- 0–3 : 0=off,1=acc,2=on,3=starter
 ---@field lowpressure number            -- 0 or 1 : Tire deflated
 ---@field odometer number               -- meters : Total distance traveled
 ---@field oil number                    -- 0 or 1 : Oil >130°C warning
@@ -90,6 +90,5 @@
 
 ---@type Electrics
 electrics = electrics
-v = v
 
 return {}

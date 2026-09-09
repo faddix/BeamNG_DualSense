@@ -1,0 +1,22 @@
+{
+    "name": "DSX Settings",
+    "author": "BNG_DSX",
+    "version": "3.0",
+    "description": "Configure DualSense triggers, LEDs and the DSX UDP connection.",
+    "directive": "dsxSettings",
+    "domElement": "<dsx-settings></dsx-settings>",
+    "types": [
+        "ui.apps.categories.utility"
+    ],
+    "category": "General",
+    "isAuxiliary": false,
+    "interactive": "required",
+    "css": {
+        "top": "60px",
+        "left": "40px",
+        "width": "490px",
+        "height": "660px",
+        "min-width": "340px",
+        "min-height": "400px"
+    }
+}
